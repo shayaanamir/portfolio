@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+:root {
+  --p5-red: #D91C2B;
+  --p5-black: #111111;
+  --p5-white: #F5F5F5;
+  --p5-yellow: #FFE600;
+  --p5-gray: #2D2D2D;
+}
+
+@font-face {
+  font-family: 'Shoplift';
+  src: url('/fonts/shoplift.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  background-color: var(--p5-gray);
+  color: var(--p5-black);
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+  /* Prevent scrolling for the "app" feel */
+}
+
+/* Custom Utilities for P5 Style */
+@layer utilities {
+  .font-shoplift {
+    font-family: 'Shoplift', sans-serif;
+  }
+
+  .p5-skew {
+    transform: skewX(-12deg);
+  }
+
+  .p5-shadow {
+    box-shadow: 4px 4px 0px var(--p5-black);
+  }
+
+  .text-shadow-p5 {
+    text-shadow: 2px 2px 0px var(--p5-black);
+  }
+}
+
+/* Halftone Pattern Background */
+.bg-halftone {
+  background-image: radial-gradient(var(--p5-gray) 20%, transparent 20%);
+  background-color: var(--p5-black);
+  background-position: 0 0, 5px 5px;
+  background-size: 10px 10px;
+}
