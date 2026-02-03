@@ -18,7 +18,7 @@ export interface PersonaData {
 }
 
 export const PORTFOLIO_DATA: PersonaData = {
-    name: "Protagonist", // Replace with User's Name
+    name: "Shayaan Amir", // Replace with User's Name
     title: "Full Stack Developer",
     level: 99,
     arcana: "The Fool",

@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Scene from '@/components/Canvas/Scene';
+import Background from '@/components/UI/Background';
+import CallingCard from '@/components/UI/CallingCard';
 import Menu from '@/components/UI/Menu';
 import Layout from '@/components/UI/Layout';
 import { PORTFOLIO_DATA } from '@/app/data/portfolio';
@@ -12,11 +13,16 @@ export default function Home() {
 
   return (
     <Layout>
-      {/* 3D Background */}
-      <Scene />
+      {/* Persistent Layers */}
+      <Background />
 
-      {/* Main UI Layer */}
-      <div className="relative z-10 w-full h-full flex">
+      {/* Main UI Layer - Fades in after intro */}
+      <motion.div
+        className="relative z-10 w-full h-full flex"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.8 }}
+      >
         {/* Menu */}
         <div className="w-1/3 h-full relative">
           <Menu onSelect={setActiveSection} />
@@ -31,16 +37,15 @@ export default function Home() {
               animate={{ opacity: 1, x: 0, skewX: 0 }}
               exit={{ opacity: 0, x: -50, skewX: 10 }}
               transition={{ duration: 0.3 }}
-              className="bg-black/80 text-white p-10 border-4 border-white p5-shadow max-w-2xl w-full max-h-[80vh] overflow-y-auto"
+              className={`text-white w-full transition-all duration-300
+                ${activeSection !== 'home' ? 'bg-black/90 p-10 border-4 border-white p5-shadow max-w-2xl max-h-[80vh] overflow-y-auto' : 'p-0 overflow-visible flex items-center justify-center'}`}
               style={{
-                clipPath: 'polygon(5% 0%, 100% 0%, 100% 95%, 95% 100%, 0% 100%, 0% 5%)'
+                clipPath: activeSection === 'home' ? 'none' : 'polygon(5% 0%, 100% 0%, 100% 95%, 95% 100%, 0% 100%, 0% 5%)'
               }}
             >
               {activeSection === 'home' && (
-                <div>
-                  <h1 className="text-6xl font-black mb-4 text-[#D91C2B] uppercase">{PORTFOLIO_DATA.name}</h1>
-                  <h2 className="text-2xl mb-8 font-bold">{PORTFOLIO_DATA.title}</h2>
-                  <p className="text-lg leading-relaxed">{PORTFOLIO_DATA.about}</p>
+                <div className="flex items-center justify-center min-h-[300px]">
+                  <CallingCard />
                 </div>
               )}
 
@@ -81,7 +86,7 @@ export default function Home() {
             </motion.div>
           </AnimatePresence>
         </div>
-      </div>
+      </motion.div>
     </Layout>
   );
 }
