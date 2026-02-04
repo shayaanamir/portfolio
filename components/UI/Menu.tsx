@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 
 const menuItems = [
-    { label: 'PROTAGONIST', id: 'home', color: '#ff0000' },
+    { label: 'HOME', id: 'home', color: '#ff0000' },
     { label: 'SKILLS', id: 'skills', color: '#ffe600' },
     { label: 'CONFIDANTS', id: 'projects', color: '#00ccff' },
     { label: 'MAP', id: 'contact', color: '#ff00ff' },
