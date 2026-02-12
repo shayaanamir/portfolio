@@ -5,9 +5,9 @@ import { useState } from 'react';
 
 const menuItems = [
     { label: 'HOME', id: 'home', color: '#ff0000' },
-    { label: 'SKILLS', id: 'skills', color: '#ffe600' },
-    { label: 'CONFIDANTS', id: 'projects', color: '#00ccff' },
-    { label: 'MAP', id: 'contact', color: '#ff00ff' },
+    { label: 'ABOUT', id: 'about', color: '#ffe600' },
+    { label: 'PROJECTS', id: 'projects', color: '#00ccff' },
+    { label: 'CONTACT', id: 'contact', color: '#ff00ff' },
 ];
 
 interface MenuProps {
