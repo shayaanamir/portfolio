@@ -43,6 +43,13 @@ const DEFAULT_ZONES: ZonesConfig = {
         color: "#00ccff",
         label: "PROJECTS"
     },
+    experience: {
+        position: new Vector3(-8, -5, -8),
+        camPos: new Vector3(-12, -2, 5),
+        camLookAt: new Vector3(-8, -5, -8),
+        color: "#ff4d00",
+        label: "EXPERIENCE"
+    },
     contact: {
         position: new Vector3(0, 10, -15),
         camPos: new Vector3(0, 0, -5),
@@ -327,8 +334,8 @@ function SceneModel({ onZonesExtracted }: { onZonesExtracted: (zones: ZonesConfi
 
     const zones = useMemo(() => {
         const extractedZones: ZonesConfig = {};
-        const sections = ['home', 'about', 'projects', 'contact', 'start'];
-        const colors = ['#D91C2B', '#ffe600', '#00ccff', '#ff00ff', '#ffffff'];
+        const sections = ['home', 'about', 'projects', 'experience', 'contact', 'start'];
+        const colors = ['#D91C2B', '#ffe600', '#00ccff', '#ff4d00', '#ff00ff', '#ffffff'];
 
         sections.forEach((section, index) => {
             const capitalizedSection = section.charAt(0).toUpperCase() + section.slice(1);
@@ -389,11 +396,11 @@ function SceneModel({ onZonesExtracted }: { onZonesExtracted: (zones: ZonesConfi
         <>
             <primitive object={scene} />
             <SceneAnimations scene={scene} />
-            <EffectComposer>
+            <EffectComposer multisampling={0}>
                 <Bloom
-                    intensity={1.0}
-                    luminanceThreshold={1.5}
-                    luminanceSmoothing={0.9}
+                    intensity={0.6}
+                    luminanceThreshold={0.8}
+                    luminanceSmoothing={0.5}
                     mipmapBlur
                 />
             </EffectComposer>
@@ -450,9 +457,9 @@ export default function Scene({ activeSection }: { activeSection: string }) {
 
     return (
         <div className="fixed inset-0 z-0 bg-neutral-900">
-            <Canvas>
+            <Canvas dpr={[1, 2]}>
                 <PerspectiveCamera makeDefault position={[0, 0, 10]} />
-                <fog attach="fog" args={['#1a1a1a', 50, 700]} />
+                <fog attach="fog" args={['#1a1a1a', 50, 800]} />
                 <ambientLight intensity={0.5} />
                 <pointLight position={[10, 10, 10]} />
                 <pointLight position={[-10, -10, -5]} intensity={0.5} color="blue" />

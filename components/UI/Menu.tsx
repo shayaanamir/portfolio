@@ -7,6 +7,7 @@ const menuItems = [
     { label: 'HOME', id: 'home', color: '#ff0000' },
     { label: 'ABOUT', id: 'about', color: '#ffe600' },
     { label: 'PROJECTS', id: 'projects', color: '#00ccff' },
+    { label: 'EXPERIENCE', id: 'experience', color: '#ff4d00' },
     { label: 'CONTACT', id: 'contact', color: '#ff00ff' },
 ];
 
