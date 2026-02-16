@@ -5,7 +5,7 @@ import { useRef, useEffect, useMemo, useState } from 'react';
 import { Vector3, Object3D, Material, MeshStandardMaterial, Mesh } from 'three';
 import { PerspectiveCamera, useGLTF } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
-
+import { BillboardContent } from './BillboardContent';
 
 // Zone type definition
 type Zone = {
@@ -329,7 +329,7 @@ function SceneAnimations({ scene }: { scene: Object3D }) {
     return null;
 }
 
-function SceneModel({ onZonesExtracted }: { onZonesExtracted: (zones: ZonesConfig) => void }) {
+function SceneModel({ onZonesExtracted, activeSection }: { onZonesExtracted: (zones: ZonesConfig) => void; activeSection: string }) {
     const { scene } = useGLTF('/models/scene.glb');
 
     const zones = useMemo(() => {
@@ -396,6 +396,7 @@ function SceneModel({ onZonesExtracted }: { onZonesExtracted: (zones: ZonesConfi
         <>
             <primitive object={scene} />
             <SceneAnimations scene={scene} />
+            <BillboardContent sceneModel={scene} activeSection={activeSection} /> {/* Add this prop */}
             <EffectComposer multisampling={0}>
                 <Bloom
                     intensity={0.6}
@@ -466,8 +467,7 @@ export default function Scene({ activeSection }: { activeSection: string }) {
 
                 <CameraRig activeSection={activeSection} zones={zones} />
 
-                <SceneModel onZonesExtracted={handleZonesExtracted} />
-
+                <SceneModel onZonesExtracted={handleZonesExtracted} activeSection={activeSection} />
                 <StarrySky />
             </Canvas>
         </div>
