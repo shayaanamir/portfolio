@@ -77,8 +77,9 @@ export function BillboardContent({ sceneModel, activeSection }: BillboardContent
                 const worldPos = new Vector3();
                 const worldQuat = new Quaternion();
 
-                billboard.updateWorldMatrix(true, false);
-                billboard.getWorldPosition(worldPos);
+                billboard.updateWorldMatrix(true, true);
+                const boundingBox = new Box3().setFromObject(billboard);
+                boundingBox.getCenter(worldPos);
                 billboard.getWorldQuaternion(worldQuat);
 
                 const billboardSize = getBillboardSize(billboard);
@@ -319,6 +320,8 @@ function applyGlitchEffect(element: HTMLDivElement, progress: number, type: 'in'
 function getBillboardSize(billboard: Object3D): Vector3 {
     let localSize = new Vector3();
     let meshCount = 0;
+    const worldScale = new Vector3();
+    billboard.getWorldScale(worldScale);
 
     billboard.traverse((child) => {
         if ((child as Mesh).isMesh) {
@@ -339,9 +342,9 @@ function getBillboardSize(billboard: Object3D): Vector3 {
         }
     });
 
-    const actualWidth = localSize.z;
-    const actualHeight = localSize.y;
-    const thickness = localSize.x;
+    const actualWidth = localSize.z * Math.abs(worldScale.z);
+    const actualHeight = localSize.y * Math.abs(worldScale.y);
+    const thickness = localSize.x * Math.abs(worldScale.x);
 
     if (actualWidth < 0.1 || actualHeight < 0.1) {
         return new Vector3(10, 6, 1);
