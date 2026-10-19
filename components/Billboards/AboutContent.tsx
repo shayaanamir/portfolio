@@ -3,6 +3,7 @@ import { SlantBanner } from '../p5/SlantBanner';
 import { SkewBadge } from '../p5/SkewBadge';
 import { CallingCardButton } from '../p5/CallingCardButton';
 import { SlashDivider } from '../p5/SlashDivider';
+import './billboard_glitch.css';
 
 const skills = [
   { label: 'WebGL', note: 'Realtime rendering', icon: '⬡' },
@@ -19,7 +20,7 @@ export function AboutContent() {
   const [hoveredSkill, setHoveredSkill] = useState<number | null>(null);
 
   return (
-    <div style={{
+    <div className="scanlines" style={{
       width: '100%', height: '100%', background: '#0D0D0D',
       overflowY: 'auto', boxSizing: 'border-box',
       scrollbarWidth: 'thin', scrollbarColor: '#D92323 #0D0D0D',

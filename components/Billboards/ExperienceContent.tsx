@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SlantBanner } from '../p5/SlantBanner';
 import { SkewBadge } from '../p5/SkewBadge';
+import './billboard_glitch.css';
 
 const roles = [
   {
@@ -118,7 +119,7 @@ function RoleCard({ entry, tilt = '-1deg', isFirst = false }: RoleCardProps) {
 
 export function ExperienceContent() {
   return (
-    <div style={{
+    <div className="scanlines" style={{
       width: '100%', height: '100%', background: '#0D0D0D',
       overflowY: 'auto', boxSizing: 'border-box',
       scrollbarWidth: 'thin', scrollbarColor: '#D92323 #0D0D0D',
