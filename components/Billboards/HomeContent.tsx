@@ -48,7 +48,7 @@ export function HomeContent() {
           <span
             style={{
               fontFamily: "'Roboto Mono', ui-monospace, monospace",
-              fontSize: '13px',
+              fontSize: '26px',
               fontWeight: 700,
               textTransform: 'uppercase',
               letterSpacing: '0.42em',
@@ -68,7 +68,7 @@ export function HomeContent() {
                 background: '#FFFFFF',
                 color: '#0D0D0D',
                 fontFamily: "'Archivo Black', Impact, sans-serif",
-                fontSize: '80px',
+                fontSize: '60px',
                 textTransform: 'uppercase',
                 lineHeight: 1,
                 padding: '6px 18px',
@@ -96,47 +96,6 @@ export function HomeContent() {
             </span>
           </span>
         </h1>
-
-        {/* Divider + stack */}
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <SlashDivider tone="crimson" />
-          <span style={{
-            fontFamily: "'Barlow Condensed', Oswald, sans-serif",
-            fontSize: '22px',
-            fontWeight: 700,
-            fontStyle: 'italic',
-            textTransform: 'uppercase',
-            letterSpacing: '0.18em',
-            color: '#7B7B7B',
-          }}>
-            THREE.JS • WEBGL • REACT
-          </span>
-          <SlashDivider tone="crimson" />
-        </div>
-
-        {/* Badges */}
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
-          {['CREATIVE DEVELOPER', 'TOKYO / REMOTE', 'OPEN TO WORK'].map((badge, i) => (
-            <span key={badge} style={{
-              display: 'inline-block',
-              transform: 'skewX(-12deg)',
-              background: i === 0 ? '#D92323' : i === 1 ? '#FFFFFF' : '#0D0D0D',
-              color: i === 1 ? '#0D0D0D' : '#FFFFFF',
-              border: `3px solid ${i === 1 ? '#0D0D0D' : '#FFFFFF'}`,
-              boxShadow: '3px 3px 0px #0D0D0D',
-              padding: '3px 14px',
-            }}>
-              <span style={{
-                display: 'inline-block', transform: 'skewX(12deg)',
-                fontFamily: "'Barlow Condensed', Oswald, sans-serif",
-                fontSize: '13px', fontWeight: 800, textTransform: 'uppercase',
-                fontStyle: 'italic', letterSpacing: '0.14em',
-              }}>
-                {badge}
-              </span>
-            </span>
-          ))}
-        </div>
       </div>
     </div>
   );
