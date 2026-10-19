@@ -12,11 +12,15 @@
   --chalk:   #FFFFFF;
 
   /* Legacy P5 vars kept for compatibility */
-  --p5-red:    #D91C2B;
-  --p5-black:  #111111;
-  --p5-white:  #F5F5F5;
-  --p5-yellow: #FFE600;
-  --p5-gray:   #2D2D2D;
+  --p5-red:        #D91C2B;
+  --p5-black:      #111111;
+  --p5-white:      #F5F5F5;
+  --p5-yellow:     #FFE600;
+  --p5-gray:       #2D2D2D;
+  --p5-ink:        #0b0b0b;
+  --p5-cyan:       #2ee9ff;
+  --p5-cyan-light: #9ff8ff;
+  --p5-blue:       #1c45f2;
 }
 
 @font-face {

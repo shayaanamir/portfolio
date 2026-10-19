@@ -1,38 +1,76 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import Background from '@/components/UI/Background';
-import CallingCard from '@/components/UI/CallingCard';
-import Menu from '@/components/UI/Menu';
 import Layout from '@/components/UI/Layout';
-import { PORTFOLIO_DATA } from '@/app/data/portfolio';
+import { RadialMenu } from '@/components/UI/RadialMenu';
+import { PressAnyKey } from '@/components/UI/PressAnyKey';
+import { menuItems } from '@/data/menuItems';
+
+const IGNORED_KEYS = ['Escape', 'Tab', 'Shift', 'Control', 'Alt', 'Meta', 'CapsLock'];
 
 export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const reduce = useReducedMotion();
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.repeat) return;
+      if (menuOpen) {
+        if (e.key === 'Escape') {
+          setMenuOpen(false);
+          setActiveSection('home');
+        }
+        return;
+      }
+      if (IGNORED_KEYS.includes(e.key)) return;
+      e.preventDefault();
+      setMenuOpen(true);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [menuOpen]);
+
+  const handleSelect = (id: string) => {
+    setActiveSection(id);
+  };
+
+  const handleClose = () => {
+    setMenuOpen(false);
+    setActiveSection('home');
+  };
 
   return (
     <Layout>
-      {/* Persistent Layers */}
+      {/* Persistent 3D Three.js Canvas */}
       <Background activeSection={activeSection} />
 
-      {/* Main UI Layer - Fades in after intro */}
-      <motion.div
-        className="relative z-10 w-full h-full flex"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.8 }}
-      >
-        {/* Menu */}
-        <div className="w-1/3 h-full relative">
-          <Menu onSelect={setActiveSection} />
-        </div>
-
-        {/* Dynamic Content Area - REMOVED as per request to focus on 3D world */}
-        <div className="w-2/3 h-full pointer-events-none">
-          {/* Placeholder for future non-intrusive UI if needed */}
-        </div>
-      </motion.div>
+      {/* Main UI Layer */}
+      <AnimatePresence mode="wait">
+        {menuOpen ? (
+          <motion.div
+            key="menu"
+            className="pointer-events-none absolute inset-0 origin-bottom-left z-20"
+            initial={reduce ? false : { opacity: 0, rotate: -24 }}
+            animate={{ opacity: 1, rotate: 0 }}
+            exit={reduce ? undefined : { opacity: 0, rotate: -24 }}
+            transition={{ duration: 0.26, ease: [0.23, 1, 0.32, 1] }}
+          >
+            <RadialMenu
+              items={menuItems}
+              onSelect={handleSelect}
+              onClose={handleClose}
+            />
+          </motion.div>
+        ) : (
+          <PressAnyKey
+            key="prompt"
+            onEnter={() => setMenuOpen(true)}
+          />
+        )}
+      </AnimatePresence>
     </Layout>
   );
 }
