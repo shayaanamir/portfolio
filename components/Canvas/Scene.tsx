@@ -59,9 +59,18 @@ const DEFAULT_ZONES: ZonesConfig = {
     }
 };
 
-function CameraRig({ activeSection, zones }: { activeSection: string; zones: ZonesConfig }) {
+function CameraRig({
+    activeSection,
+    zones,
+    onIntroComplete,
+}: {
+    activeSection: string;
+    zones: ZonesConfig;
+    onIntroComplete?: () => void;
+}) {
     const { camera } = useThree();
     const hasInitialized = useRef(false);
+    const introNotifiedRef = useRef(false);
     const [introFinished, setIntroFinished] = useState(false);
     const [isIntroTransition, setIsIntroTransition] = useState(false);
     const targetPos = useRef(new Vector3().copy(zones.home.camPos));
@@ -130,9 +139,13 @@ function CameraRig({ activeSection, zones }: { activeSection: string; zones: Zon
 
                 hasInitialized.current = true;
                 setIntroFinished(true);
+                if (!introNotifiedRef.current) {
+                    introNotifiedRef.current = true;
+                    onIntroComplete?.();
+                }
             }
         }
-    }, [camera, zones]);
+    }, [camera, zones, onIntroComplete]);
 
     useFrame((state, delta) => {
         const speed = 1000; // Adjusted for visible pan animation
@@ -202,6 +215,10 @@ function CameraRig({ activeSection, zones }: { activeSection: string; zones: Zon
             // Disable intro transition once we've reached the target
             if (isIntroTransition) {
                 setIsIntroTransition(false);
+                if (!introNotifiedRef.current) {
+                    introNotifiedRef.current = true;
+                    onIntroComplete?.();
+                }
             }
         }
 
@@ -449,7 +466,13 @@ function StarrySky() {
     );
 }
 
-export default function Scene({ activeSection }: { activeSection: string }) {
+export default function Scene({
+    activeSection,
+    onIntroComplete,
+}: {
+    activeSection: string;
+    onIntroComplete?: () => void;
+}) {
     const [zones, setZones] = useState<ZonesConfig>(DEFAULT_ZONES);
 
     const handleZonesExtracted = (newZones: ZonesConfig) => {
@@ -465,7 +488,7 @@ export default function Scene({ activeSection }: { activeSection: string }) {
                 <pointLight position={[10, 10, 10]} />
                 <pointLight position={[-10, -10, -5]} intensity={0.5} color="blue" />
 
-                <CameraRig activeSection={activeSection} zones={zones} />
+                <CameraRig activeSection={activeSection} zones={zones} onIntroComplete={onIntroComplete} />
 
                 <SceneModel onZonesExtracted={handleZonesExtracted} activeSection={activeSection} />
                 <StarrySky />

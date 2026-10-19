@@ -37,8 +37,16 @@ export function RadialMenu({ items, initialIndex = 0, onSelect, onClose }: Radia
   const reduce = useReducedMotion();
 
   const move = useCallback(
-    (delta: number) => setActive((i) => Math.min(items.length - 1, Math.max(0, i + delta))),
-    [items.length],
+    (delta: number) => {
+      setActive((prev) => {
+        const next = Math.min(items.length - 1, Math.max(0, prev + delta));
+        if (next !== prev && items[next]) {
+          onSelect?.(items[next].id);
+        }
+        return next;
+      });
+    },
+    [items, onSelect],
   );
 
   useEffect(() => {
@@ -49,9 +57,6 @@ export function RadialMenu({ items, initialIndex = 0, onSelect, onClose }: Radia
       } else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
         e.preventDefault();
         move(1);
-      } else if (e.key === 'Enter') {
-        e.preventDefault();
-        onSelect?.(items[active]?.id);
       } else if (e.key === 'Escape') {
         e.preventDefault();
         onClose?.();
@@ -59,7 +64,7 @@ export function RadialMenu({ items, initialIndex = 0, onSelect, onClose }: Radia
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [active, items, move, onSelect, onClose]);
+  }, [move, onClose]);
 
   const spring = reduce
     ? { duration: 0 }
@@ -264,17 +269,14 @@ export function RadialMenu({ items, initialIndex = 0, onSelect, onClose }: Radia
         style={{ fontFamily: "'Barlow Condensed', 'Archivo Black', sans-serif" }}
       >
         <span className="flex items-center gap-2">
-          <kbd className="bg-white px-1.5 py-0.5 text-black font-bold text-[10px]">↑↓</kbd> Select
-        </span>
-        <span className="flex items-center gap-2">
-          <kbd className="bg-[#D92323] px-1.5 py-0.5 text-white font-bold text-[10px]">⏎</kbd> Go
+          <kbd className="bg-white px-1.5 py-0.5 text-black font-bold text-[10px]">↑↓</kbd> Switch
         </span>
         <button
           type="button"
           onClick={() => onClose?.()}
           className="flex items-center gap-2 pointer-events-auto hover:opacity-80 transition-opacity cursor-pointer bg-transparent border-none p-0 text-white font-inherit uppercase"
         >
-          <kbd className="border border-white px-1 py-px text-white font-bold text-[10px]">Esc</kbd> Back
+          <kbd className="border border-white px-1 py-px text-white font-bold text-[10px]">Esc</kbd> Home
         </button>
       </div>
     </nav>

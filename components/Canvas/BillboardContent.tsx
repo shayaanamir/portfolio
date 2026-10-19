@@ -40,7 +40,7 @@ export function BillboardContent({ sceneModel, activeSection }: BillboardContent
         container.style.width = '100%';
         container.style.height = '100%';
         container.style.pointerEvents = 'none';
-        container.style.zIndex = '9999';
+        container.style.zIndex = '10';
         document.body.appendChild(container);
         containerRef.current = container;
 
@@ -109,7 +109,9 @@ export function BillboardContent({ sceneModel, activeSection }: BillboardContent
                 element.style.pointerEvents = 'auto';
                 element.style.boxSizing = 'border-box';
                 element.style.cursor = 'default';
-                element.style.opacity = '0';
+                const isInitialActive = section.toLowerCase() === activeSection.toLowerCase();
+                element.style.opacity = isInitialActive ? '1' : '0';
+                element.style.pointerEvents = isInitialActive ? 'auto' : 'none';
 
                 const root = createRoot(element);
                 root.render(getReactContentForSection(section));
@@ -138,6 +140,13 @@ export function BillboardContent({ sceneModel, activeSection }: BillboardContent
             }
         });
 
+        // Ensure current active section billboard is visible immediately
+        const activeBillboard = billboardsRef.current.get(activeSection.toLowerCase());
+        if (activeBillboard) {
+            activeBillboard.element.style.opacity = '1';
+            activeBillboard.element.style.pointerEvents = 'auto';
+        }
+
         return () => {
             billboardsRef.current.forEach(({ cssObject, root }) => {
                 scene.remove(cssObject);
@@ -152,7 +161,7 @@ export function BillboardContent({ sceneModel, activeSection }: BillboardContent
             css3DRendererRef.current = null;
             containerRef.current = null;
         };
-    }, [sceneModel, gl, scene, size]);
+    }, [sceneModel, gl, scene]);
 
     // Update billboard visibility with glitch trigger
     useEffect(() => {
