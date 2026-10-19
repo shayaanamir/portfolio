@@ -50,7 +50,6 @@ function RoleCard({ entry, tilt = '-1deg', isFirst = false }: RoleCardProps) {
         boxShadow: hovered ? '0px 0px 0px #0D0D0D' : '6px 6px 0px #0D0D0D',
         transform: hovered ? 'rotate(0deg)' : `rotate(${tilt})`,
         transition: 'transform 0.2s, box-shadow 0.2s',
-        overflow: 'hidden',
       }}
     >
       {/* Halftone */}

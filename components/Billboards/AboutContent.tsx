@@ -40,9 +40,8 @@ export function AboutContent() {
         {/* Bio statement */}
         <div style={{ marginTop: '40px', position: 'relative' }}>
           <div style={{
-            border: '4px solid #FFFFFF', background: '#FFFFFF',
+            border: '4px solid #0D0D0D', background: '#FFFFFF',
             boxShadow: '6px 6px 0px #0D0D0D',
-            clipPath: 'polygon(0 14px, 3% 0, 100% 0, 100% calc(100% - 18px), 96% 100%, 2% 100%, 0 calc(100% - 6px))',
           }}>
             <div style={{ padding: '28px 32px 40px' }}>
               <p style={{
@@ -74,9 +73,11 @@ export function AboutContent() {
             </div>
           </div>
           <span style={{
-            position: 'absolute', bottom: '-10px', left: '64px',
-            height: '20px', width: '28px', background: '#FFFFFF',
-            clipPath: 'polygon(0 0, 100% 0, 20% 100%)',
+            position: 'absolute', bottom: '-14px', left: '64px',
+            width: 0, height: 0,
+            borderLeft: '14px solid transparent',
+            borderRight: '0px solid transparent',
+            borderTop: '14px solid #0D0D0D',
           }} aria-hidden="true" />
         </div>
 

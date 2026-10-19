@@ -49,7 +49,6 @@ function ProjectCard({ project, featured = false, tilt = '-1deg' }: ProjectCardP
         position: 'relative', display: 'flex', flexDirection: 'column', height: '100%',
         border: '4px solid #FFFFFF', background: '#0D0D0D',
         boxShadow: hovered ? '0px 0px 0px #0D0D0D' : '6px 6px 0px #0D0D0D',
-        clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%)',
         transform: hovered ? 'rotate(0deg) translate(-2px, -2px)' : `rotate(${tilt})`,
         transition: 'transform 0.2s, box-shadow 0.2s',
         cursor: 'default',

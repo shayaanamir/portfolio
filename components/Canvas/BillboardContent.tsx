@@ -101,14 +101,12 @@ export function BillboardContent({ sceneModel, activeSection }: BillboardContent
                 element.className = `billboard-${section.toLowerCase()}`;
                 element.style.width = `${htmlWidth}px`;
                 element.style.height = `${htmlHeight}px`;
-                element.style.backdropFilter = 'blur(10px)';
                 element.style.color = 'white';
-                element.style.padding = '40px';
-                element.style.fontSize = '24px';
-                element.style.fontFamily = 'system-ui, -apple-system, sans-serif';
-                element.style.borderRadius = '12px';
+                // Components own their padding/fonts/layout
+                // No backdropFilter — breaks Firefox preserve-3d compositing
+                // No overflow:auto — Firefox CSS3D doesn't handle scroll inside preserve-3d
+                element.style.overflow = 'hidden';
                 element.style.pointerEvents = 'auto';
-                element.style.overflow = 'auto';
                 element.style.boxSizing = 'border-box';
                 element.style.cursor = 'default';
                 element.style.opacity = '0';

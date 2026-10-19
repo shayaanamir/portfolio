@@ -10,31 +10,27 @@ interface SlantBannerProps {
   titleSize?: string;
 }
 
-const stripeStyle: Record<string, React.CSSProperties> = {
-  hazard: {
-    backgroundImage: 'repeating-linear-gradient(-45deg, #D92323 0 13px, #0D0D0D 13px 26px)',
-  },
-  'hazard-red': {
-    backgroundImage: 'repeating-linear-gradient(-45deg, #732424 0 13px, #0D0D0D 13px 26px)',
-  },
-};
-
 /**
- * Slanted crimson screen header with ransom-note title letters,
- * optional warning-tape stripe running across the bottom edge.
+ * Screen header banner.
+ *
+ * Firefox / CSS3D compatibility note:
+ * - NO skewY transform — nested skew inside CSS3DRenderer's preserve-3d
+ *   context is misinterpreted as a 3D operation in Firefox, collapsing the
+ *   banner to near-zero height.
+ * - Instead, a flat crimson bar with a thick left accent stripe suggests the
+ *   P5 energy without any transforms at all.
+ * - h1 uses position:relative so its SR-only absolute child stays contained.
  */
 export function SlantBanner({ kicker, title, stripe = 'hazard-red', meta, titleSize = '28px' }: SlantBannerProps) {
   return (
-    <header style={{ position: 'relative', marginBottom: '8px' }}>
-      {/* Main slanted band */}
+    <header style={{ position: 'relative', marginBottom: stripe !== 'none' ? '24px' : '8px' }}>
+      {/* Crimson banner — flat (no skewY) */}
       <div style={{
         position: 'relative',
-        transform: 'skewY(-1deg)',
+        background: '#D92323',
         borderTop: '5px solid #FFFFFF',
         borderBottom: '5px solid #FFFFFF',
-        background: '#D92323',
         boxShadow: '6px 6px 0px #0D0D0D',
-        overflow: 'hidden',
       }}>
         {/* Halftone overlay */}
         <div style={{
@@ -48,16 +44,17 @@ export function SlantBanner({ kicker, title, stripe = 'hazard-red', meta, titleS
 
         <div style={{
           position: 'relative',
-          transform: 'skewY(1deg)',
           display: 'flex',
           flexWrap: 'wrap',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: '12px 24px',
+          gap: '10px 24px',
           padding: '16px 32px',
         }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {/* Kicker */}
             <span style={{
+              display: 'block',
               fontFamily: "'Roboto Mono', ui-monospace, monospace",
               fontSize: '10px',
               fontWeight: 700,
@@ -67,13 +64,27 @@ export function SlantBanner({ kicker, title, stripe = 'hazard-red', meta, titleS
             }}>
               {kicker}
             </span>
-            <h1>
-              <span style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>{title}</span>
+
+            {/* Title */}
+            <h1 style={{ margin: 0, padding: 0, position: 'relative' }}>
+              <span style={{
+                position: 'absolute',
+                width: '1px', height: '1px',
+                padding: 0, margin: '-1px',
+                overflow: 'hidden',
+                clip: 'rect(0,0,0,0)',
+                whiteSpace: 'nowrap',
+                border: 0,
+              }}>
+                {title}
+              </span>
               <span aria-hidden="true">
                 <RansomText text={title} fontSize={titleSize} />
               </span>
             </h1>
           </div>
+
+          {/* Meta badges */}
           {meta && (
             <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '10px' }}>
               {meta}
@@ -82,20 +93,22 @@ export function SlantBanner({ kicker, title, stripe = 'hazard-red', meta, titleS
         </div>
       </div>
 
-      {/* Hazard stripe */}
+      {/* Hazard stripe — absolutely positioned below the banner */}
       {stripe !== 'none' && (
         <div style={{
           position: 'absolute',
-          bottom: '-12px',
+          bottom: '-18px',
           left: '40px',
           right: '96px',
-          height: '18px',
-          transform: 'rotate(-1deg)',
+          height: '16px',
           borderTop: '3px solid #0D0D0D',
           borderBottom: '3px solid #0D0D0D',
           opacity: 0.95,
           pointerEvents: 'none',
-          ...(stripe === 'hazard' ? stripeStyle.hazard : stripeStyle['hazard-red']),
+          zIndex: 1,
+          backgroundImage: stripe === 'hazard'
+            ? 'repeating-linear-gradient(-45deg, #D92323 0 13px, #0D0D0D 13px 26px)'
+            : 'repeating-linear-gradient(-45deg, #732424 0 13px, #0D0D0D 13px 26px)',
         }} aria-hidden="true" />
       )}
     </header>

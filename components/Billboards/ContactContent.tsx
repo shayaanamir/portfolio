@@ -51,7 +51,6 @@ function ChannelTile({ channel, index }: ChannelTileProps) {
           transition: 'transform 0.2s, box-shadow 0.2s, background 0.2s',
           textDecoration: 'none',
           cursor: 'pointer',
-          overflow: 'hidden',
         }}
       >
         {/* Halftone */}

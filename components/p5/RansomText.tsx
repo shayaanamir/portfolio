@@ -16,21 +16,34 @@ const styles = [
   { bg: '#FFFFFF', color: '#D92323' },
 ];
 
-const tilts = ['-2deg', '1deg', '-1deg', '2deg', '0deg'];
-
 /**
- * Magazine cutout / ransom-note treatment — each word becomes its own pasted
- * block, alternating ink-on-chalk and chalk-on-crimson.
+ * Magazine cutout / ransom-note treatment.
+ *
+ * Firefox / CSS3D note:
+ * - Individual tile rotate() transforms removed — inside CSS3DRenderer's
+ *   preserve-3d context Firefox interprets them as 3D rotations, causing
+ *   tiles to flip out of the viewing plane.
+ * - The alternating color blocks already sell the cutout effect without rotation.
  */
-export function RansomText({ text, unit = 'word', className = '', fontSize = '32px' }: RansomTextProps) {
+export function RansomText({ text, unit = 'word', fontSize = '28px' }: RansomTextProps) {
   const parts = unit === 'word' ? text.split(' ').filter(Boolean) : text.split('');
 
   return (
-    <span style={{ display: 'inline-flex', flexWrap: 'wrap', alignItems: 'center', gap: '6px 8px' }} className={className}>
+    <span style={{
+      display: 'inline-flex',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      gap: '5px 7px',
+    }}>
       {parts.map((part, i) => {
         if (part === '//' || part === '/') {
           return (
-            <span key={`${part}-${i}`} style={{ fontFamily: "'Archivo Black', Impact, sans-serif", color: '#D92323', fontSize, padding: '0 2px' }} aria-hidden="true">
+            <span key={`sep-${i}`} style={{
+              fontFamily: "'Archivo Black', Impact, sans-serif",
+              color: '#D92323',
+              fontSize,
+              padding: '0 2px',
+            }} aria-hidden="true">
               //
             </span>
           );
@@ -40,6 +53,7 @@ export function RansomText({ text, unit = 'word', className = '', fontSize = '32
           <span
             key={`${part}-${i}`}
             style={{
+              display: 'inline-block',
               background: s.bg,
               color: s.color,
               fontFamily: "'Archivo Black', Impact, sans-serif",
@@ -47,9 +61,9 @@ export function RansomText({ text, unit = 'word', className = '', fontSize = '32
               textTransform: 'uppercase',
               lineHeight: 1,
               padding: '4px 10px',
-              display: 'inline-block',
-              transform: `rotate(${tilts[i % tilts.length]})`,
               boxShadow: '3px 3px 0px #0D0D0D',
+              // No rotate() — inside CSS3D preserve-3d Firefox interprets
+              // 2D rotate as a 3D perspective rotation, flipping tiles
             }}
           >
             {part}
